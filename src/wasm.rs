@@ -19,6 +19,7 @@ pub struct Universe {
 pub enum StartState {
     Base,
     Spaceship,
+    Random,
 }
 
 #[wasm_bindgen]
@@ -30,6 +31,7 @@ impl Universe {
         let cells = match state {
             StartState::Base => Self::base_cells(width, height),
             StartState::Spaceship => Self::spaceship(width, height),
+            StartState::Random => Self::random(width, height),
         };
 
         Universe {

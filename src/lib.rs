@@ -1,7 +1,8 @@
 mod utils;
 mod wasm;
 
-use wasm::Universe;
+use js_sys::Math;
+use wasm::{Cell, Universe};
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
@@ -57,6 +58,20 @@ impl Universe {
                 Cell::Dead
             }
         };
+        Self::generate(width, height, f)
+    }
+
+    fn random_boolean() -> bool {
+        Math::random() < 0.5
+    }
+
+    fn random(width: u32, height: u32) -> Vec<Cell> {
+        let f = |_i|
+            if Universe::random_boolean() {
+                Cell::Alive
+            } else {
+                Cell::Dead
+            };
         Self::generate(width, height, f)
     }
 }
