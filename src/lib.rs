@@ -1,8 +1,9 @@
 mod utils;
 mod wasm;
 
+use fixedbitset::FixedBitSet;
 use js_sys::Math;
-use wasm::{Cell, Universe};
+use wasm::Universe;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
@@ -32,46 +33,27 @@ impl Universe {
         count
     }
 
-    fn generate<F: Fn(u32) -> Cell>(width: u32, height: u32, f: F) -> Vec<Cell> {
-        (0..width * height)
-            .map(|i| f(i))
-            .collect()
+    fn generate<F: Fn(u32) -> bool>(width: u32, height: u32, f: F) -> FixedBitSet {
+        let size = width * height;
+        let mut bitset = FixedBitSet::with_capacity(size as usize);
+        (0..size).for_each(|i| bitset.set(i as usize, f(i)));
+        bitset
     }
 
-    fn base_cells(width: u32, height: u32) -> Vec<Cell> {
-        let f = |i: u32| {
-            if i % 2 == 0 || i % 7 == 0 {
-                Cell::Alive
-            } else {
-                Cell::Dead
-            }
-        };
-        Self::generate(width, height, f)
+    fn base_cells(width: u32, height: u32) -> FixedBitSet {
+        Self::generate(width, height, |i: u32| i % 2 == 0 || i % 7 == 0)
     }
 
-    fn spaceship(width: u32, height: u32) -> Vec<Cell> {
+    fn spaceship(width: u32, height: u32) -> FixedBitSet {
         let spaceship = vec![70, 73, 106, 134, 138, 167, 168, 169, 170];
-        let f = |i: u32| {
-            if spaceship.contains(&i) {
-                Cell::Alive
-            } else {
-                Cell::Dead
-            }
-        };
-        Self::generate(width, height, f)
+        Self::generate(width, height, |i| spaceship.contains(&i))
     }
 
     fn random_boolean() -> bool {
         Math::random() < 0.5
     }
 
-    fn random(width: u32, height: u32) -> Vec<Cell> {
-        let f = |_i|
-            if Universe::random_boolean() {
-                Cell::Alive
-            } else {
-                Cell::Dead
-            };
-        Self::generate(width, height, f)
+    fn random(width: u32, height: u32) -> FixedBitSet {
+        Self::generate(width, height, |_i| Universe::random_boolean())
     }
 }

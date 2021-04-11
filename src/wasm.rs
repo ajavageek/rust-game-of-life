@@ -1,18 +1,11 @@
+use fixedbitset::FixedBitSet;
 use wasm_bindgen::prelude::*;
-
-#[wasm_bindgen]
-#[repr(u8)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum Cell {
-    Dead = 0,
-    Alive = 1,
-}
 
 #[wasm_bindgen]
 pub struct Universe {
     pub(super) width: u32,
     pub(super) height: u32,
-    pub(super) cells: Vec<Cell>,
+    pub(super) cells: FixedBitSet,
 }
 
 #[wasm_bindgen]
@@ -52,21 +45,21 @@ impl Universe {
                 let next_cell = match (cell, live_neighbors) {
                     // Rule 1: Any live cell with fewer than two live neighbours
                     // dies, as if caused by underpopulation.
-                    (Cell::Alive, x) if x < 2 => Cell::Dead,
+                    (true, x) if x < 2 => false,
                     // Rule 2: Any live cell with two or three live neighbours
                     // lives on to the next generation.
-                    (Cell::Alive, 2) | (Cell::Alive, 3) => Cell::Alive,
+                    (true, 2) | (true, 3) => true,
                     // Rule 3: Any live cell with more than three live
                     // neighbours dies, as if by overpopulation.
-                    (Cell::Alive, x) if x > 3 => Cell::Dead,
+                    (true, x) if x > 3 => false,
                     // Rule 4: Any dead cell with exactly three live neighbours
                     // becomes a live cell, as if by reproduction.
-                    (Cell::Dead, 3) => Cell::Alive,
+                    (false, 3) => true,
                     // All other cells remain in the same state.
                     (otherwise, _) => otherwise,
                 };
 
-                next[idx] = next_cell;
+                next.set(idx, next_cell);
             }
         }
         self.cells = next;
@@ -80,7 +73,7 @@ impl Universe {
         self.height
     }
 
-    pub fn cells(&self) -> *const Cell {
-        self.cells.as_ptr()
+    pub fn cells(&self) -> *const u32 {
+        self.cells.as_slice().as_ptr()
     }
 }
