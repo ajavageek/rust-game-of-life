@@ -30,4 +30,29 @@ impl Universe {
         }
         count
     }
+
+    fn base_cells(width: u32, height: u32) -> Vec<Cell> {
+        (0..width * height)
+            .map(|i| {
+                if i % 2 == 0 || i % 7 == 0 {
+                    Cell::Alive
+                } else {
+                    Cell::Dead
+                }
+            })
+            .collect()
+    }
+
+    fn spaceship(width: u32, height: u32) -> Vec<Cell> {
+        let spaceship = vec![70, 73, 106, 134, 138, 167, 168, 169, 170];
+        (0..width * height)
+            .map(|i| {
+                if spaceship.contains(&i) {
+                    Cell::Alive
+                } else {
+                    Cell::Dead
+                }
+            })
+            .collect()
+    }
 }
