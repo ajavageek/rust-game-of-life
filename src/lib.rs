@@ -31,28 +31,32 @@ impl Universe {
         count
     }
 
-    fn base_cells(width: u32, height: u32) -> Vec<Cell> {
+    fn generate<F: Fn(u32) -> Cell>(width: u32, height: u32, f: F) -> Vec<Cell> {
         (0..width * height)
-            .map(|i| {
-                if i % 2 == 0 || i % 7 == 0 {
-                    Cell::Alive
-                } else {
-                    Cell::Dead
-                }
-            })
+            .map(|i| f(i))
             .collect()
+    }
+
+    fn base_cells(width: u32, height: u32) -> Vec<Cell> {
+        let f = |i: u32| {
+            if i % 2 == 0 || i % 7 == 0 {
+                Cell::Alive
+            } else {
+                Cell::Dead
+            }
+        };
+        Self::generate(width, height, f)
     }
 
     fn spaceship(width: u32, height: u32) -> Vec<Cell> {
         let spaceship = vec![70, 73, 106, 134, 138, 167, 168, 169, 170];
-        (0..width * height)
-            .map(|i| {
-                if spaceship.contains(&i) {
-                    Cell::Alive
-                } else {
-                    Cell::Dead
-                }
-            })
-            .collect()
+        let f = |i: u32| {
+            if spaceship.contains(&i) {
+                Cell::Alive
+            } else {
+                Cell::Dead
+            }
+        };
+        Self::generate(width, height, f)
     }
 }

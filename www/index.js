@@ -1,12 +1,12 @@
 import { memory } from "wasm-game-of-life/wasm_game_of_life_bg";
-import { Universe, Cell } from "wasm-game-of-life";
+import { Universe, StartState, Cell } from "wasm-game-of-life";
 
 const CELL_SIZE = 5; // px
 const GRID_COLOR = "#CCCCCC";
 const DEAD_COLOR = "#FFFFFF";
 const ALIVE_COLOR = "#000000";
 
-const universe = Universe.new_spaceship();
+const universe = Universe.new(StartState.Spaceship);
 const width = universe.width();
 const height = universe.height();
 

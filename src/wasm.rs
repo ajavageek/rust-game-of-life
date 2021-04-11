@@ -16,25 +16,21 @@ pub struct Universe {
 }
 
 #[wasm_bindgen]
+pub enum StartState {
+    Base,
+    Spaceship,
+}
+
+#[wasm_bindgen]
 impl Universe {
-    pub fn new() -> Universe {
+    pub fn new(state: StartState) -> Universe {
         let width = 64;
         let height = 64;
 
-        let cells = Self::base_cells(width, height);
-
-        Universe {
-            width,
-            height,
-            cells,
-        }
-    }
-
-    pub fn new_spaceship() -> Universe {
-        let width = 64;
-        let height = 64;
-
-        let cells = Self::spaceship(width, height);
+        let cells = match state {
+            StartState::Base => Self::base_cells(width, height),
+            StartState::Spaceship => Self::spaceship(width, height),
+        };
 
         Universe {
             width,
