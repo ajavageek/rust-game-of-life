@@ -1,3 +1,4 @@
+use crate::utils;
 use fixedbitset::FixedBitSet;
 use wasm_bindgen::prelude::*;
 
@@ -19,6 +20,8 @@ pub enum StartState {
 #[wasm_bindgen]
 impl Universe {
     pub fn new(state: StartState) -> Universe {
+        utils::set_panic_hook();
+
         let width = 64;
         let height = 64;
 
