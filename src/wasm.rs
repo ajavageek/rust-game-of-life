@@ -118,4 +118,10 @@ impl Universe {
         self.height = height;
         self.cells = Universe::generate(self.width, height, |_i| false);
     }
+
+    pub fn toggle_cell(&mut self, row: u32, column: u32) {
+        let idx = self.get_index(row, column);
+        let value = self.cells.contains(idx);
+        self.cells.set(idx, !value);
+    }
 }
