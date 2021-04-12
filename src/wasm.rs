@@ -10,6 +10,7 @@ pub struct Universe {
 
 #[wasm_bindgen]
 pub enum StartState {
+    Empty,
     Base,
     Spaceship,
     Random,
@@ -25,6 +26,7 @@ impl Universe {
             StartState::Base => Self::base_cells(width, height),
             StartState::Spaceship => Self::spaceship(width, height),
             StartState::Random => Self::random(width, height),
+            StartState::Empty => FixedBitSet::with_capacity((width * height) as usize),
         };
 
         Universe {
@@ -75,5 +77,21 @@ impl Universe {
 
     pub fn cells(&self) -> *const u32 {
         self.cells.as_slice().as_ptr()
+    }
+
+    /// Set the width of the universe.
+    ///
+    /// Resets all cells to the dead state.
+    pub fn set_width(&mut self, width: u32) {
+        self.width = width;
+        self.cells = Universe::generate(width, self.height, |_i| false);
+    }
+
+    /// Set the height of the universe.
+    ///
+    /// Resets all cells to the dead state.
+    pub fn set_height(&mut self, height: u32) {
+        self.height = height;
+        self.cells = Universe::generate(self.width, height, |_i| false);
     }
 }
