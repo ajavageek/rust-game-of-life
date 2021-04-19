@@ -132,4 +132,16 @@ impl Universe {
             self.cells = FixedBitSet::with_capacity((self.width * self.height) as usize)
         }
     }
+
+    pub fn insert_glider(&mut self, row: u32, col: u32) {
+        self.cells.set(self.get_index(row, col), false);
+        self.cells.set(self.get_index(row, col + 1), true);
+        self.cells.set(self.get_index(row, col + 2), false);
+        self.cells.set(self.get_index(row + 1, col), false);
+        self.cells.set(self.get_index(row + 1, col + 1), false);
+        self.cells.set(self.get_index(row + 1, col + 2), true);
+        self.cells.set(self.get_index(row + 2, col + 0), true);
+        self.cells.set(self.get_index(row + 2, col + 1), true);
+        self.cells.set(self.get_index(row + 2, col + 2), true);
+    }
 }

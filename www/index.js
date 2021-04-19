@@ -111,6 +111,7 @@ playPauseButton.addEventListener("click", _ => {
 });
 
 canvas.addEventListener("click", event => {
+
     const boundingRect = canvas.getBoundingClientRect();
 
     const scaleX = canvas.width / boundingRect.width;
@@ -122,7 +123,14 @@ canvas.addEventListener("click", event => {
     const row = Math.min(Math.floor(canvasTop / (CELL_SIZE + 1)), height - 1);
     const col = Math.min(Math.floor(canvasLeft / (CELL_SIZE + 1)), width - 1);
 
-    universe.toggle_cell(row, col);
+    switch (onClickSelect.value) {
+        case "toggle":
+            universe.toggle_cell(row, col);
+            break;
+        case "glider":
+            universe.insert_glider(row, col);
+            break;
+    }
 
     drawGrid();
     drawCells();
@@ -143,6 +151,18 @@ deadButton.textContent = "☠️";
 deadButton.addEventListener("click", _ => {
     universe.reset(StartState.Empty);
 });
+
+const onClickSelect = document.getElementById("onClick");
+
+const toggle = document.createElement("option");
+toggle.value = "toggle";
+toggle.text = "⚖️";
+onClickSelect.add(toggle);
+
+const glider = document.createElement("option");
+glider.value = "glider";
+glider.text = "🚀";
+onClickSelect.add(glider);
 
 drawGrid();
 drawCells();
