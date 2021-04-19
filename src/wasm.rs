@@ -1,9 +1,10 @@
 extern crate web_sys;
 
-use crate::utils;
 use fixedbitset::FixedBitSet;
 use wasm_bindgen::prelude::*;
 use web_sys::console;
+
+use crate::utils;
 
 #[wasm_bindgen]
 pub struct Universe {
@@ -134,14 +135,11 @@ impl Universe {
     }
 
     pub fn insert_glider(&mut self, row: u32, col: u32) {
-        self.cells.set(self.get_index(row, col), false);
-        self.cells.set(self.get_index(row, col + 1), true);
-        self.cells.set(self.get_index(row, col + 2), false);
-        self.cells.set(self.get_index(row + 1, col), false);
-        self.cells.set(self.get_index(row + 1, col + 1), false);
-        self.cells.set(self.get_index(row + 1, col + 2), true);
-        self.cells.set(self.get_index(row + 2, col + 0), true);
-        self.cells.set(self.get_index(row + 2, col + 1), true);
-        self.cells.set(self.get_index(row + 2, col + 2), true);
+        let values = [[false, true, false], [false, false, true], [true, true, true]];
+        for i in 0..values.len() {
+            for j in 0..values.len() {
+                self.cells.set(self.get_index(row + i as u32, col + j as u32), values[j][i]);
+            }
+        }
     }
 }
