@@ -6,7 +6,7 @@ const GRID_COLOR = "#CCCCCC";
 const DEAD_COLOR = "#FFFFFF";
 const ALIVE_COLOR = "#000000";
 
-const universe = Universe.new(StartState.Random);
+let universe = Universe.new(StartState.Random);
 const width = universe.width();
 const height = universe.height();
 
@@ -126,6 +126,22 @@ canvas.addEventListener("click", event => {
 
     drawGrid();
     drawCells();
+});
+
+const randomButton = document.getElementById("random");
+
+randomButton.textContent = "🎲";
+
+randomButton.addEventListener("click", _ => {
+    universe = Universe.new(StartState.Random);
+});
+
+const deadButton = document.getElementById("dead");
+
+deadButton.textContent = "☠️";
+
+deadButton.addEventListener("click", _ => {
+    universe = Universe.new(StartState.Empty);
 });
 
 drawGrid();
