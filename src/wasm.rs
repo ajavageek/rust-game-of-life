@@ -124,4 +124,12 @@ impl Universe {
         let value = self.cells.contains(idx);
         self.cells.set(idx, !value);
     }
+
+    pub fn reset(&mut self, state: StartState) {
+        if matches!(state, StartState::Random) {
+            self.cells = Self::random(self.width, self.height);
+        } else if matches!(state, StartState::Empty) {
+            self.cells = FixedBitSet::with_capacity((self.width * self.height) as usize)
+        }
+    }
 }
