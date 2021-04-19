@@ -130,6 +130,9 @@ canvas.addEventListener("click", event => {
         case "glider":
             universe.insert_glider(row, col);
             break;
+        case "pulsar":
+            universe.insert_pulsar(row, col);
+            break;
     }
 
     drawGrid();
@@ -163,6 +166,11 @@ const glider = document.createElement("option");
 glider.value = "glider";
 glider.text = "🚀";
 onClickSelect.add(glider);
+
+const pulsar = document.createElement("option");
+pulsar.value = "pulsar";
+pulsar.text = "🌟";
+onClickSelect.add(pulsar);
 
 drawGrid();
 drawCells();

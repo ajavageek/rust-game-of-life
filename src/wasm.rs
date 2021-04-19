@@ -142,4 +142,27 @@ impl Universe {
             }
         }
     }
+
+    pub fn insert_pulsar(&mut self, row: u32, col: u32) {
+        let values = [
+            [false, false, true, true, true, false, false, false, true, true, true, false, false],
+            [false, false, false, false, false, false, false, false, false, false, false, false, false],
+            [true, false, false, false, false, true, false, true, false, false, false, false, true],
+            [true, false, false, false, false, true, false, true, false, false, false, false, true],
+            [true, false, false, false, false, true, false, true, false, false, false, false, true],
+            [false, false, true, true, true, false, false, false, true, true, true, false, false],
+            [false, false, false, false, false, false, false, false, false, false, false, false, false],
+            [false, false, true, true, true, false, false, false, true, true, true, false, false],
+            [true, false, false, false, false, true, false, true, false, false, false, false, true],
+            [true, false, false, false, false, true, false, true, false, false, false, false, true],
+            [true, false, false, false, false, true, false, true, false, false, false, false, true],
+            [false, false, false, false, false, false, false, false, false, false, false, false, false],
+            [false, false, true, true, true, false, false, false, true, true, true, false, false]
+        ];
+        for i in 0..values.len() {
+            for j in 0..values.len() {
+                self.cells.set(self.get_index(row + i as u32, col + j as u32), values[j][i]);
+            }
+        }
+    }
 }
