@@ -70,4 +70,12 @@ impl Universe {
     fn random(width: u32, height: u32) -> FixedBitSet {
         Self::generate(width, height, |_i| Universe::random_boolean())
     }
+
+    fn insert_pattern(&mut self, row: u32, col: u32, values: Vec<Vec<bool>>) {
+        for i in 0..values.len() {
+            for j in 0..values.len() {
+                self.cells.set(self.get_index(row + i as u32, col + j as u32), values[j][i]);
+            }
+        }
+    }
 }

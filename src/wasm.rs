@@ -135,34 +135,26 @@ impl Universe {
     }
 
     pub fn insert_glider(&mut self, row: u32, col: u32) {
-        let values = [[false, true, false], [false, false, true], [true, true, true]];
-        for i in 0..values.len() {
-            for j in 0..values.len() {
-                self.cells.set(self.get_index(row + i as u32, col + j as u32), values[j][i]);
-            }
-        }
+        let values = vec!(vec!(false, true, false), vec!(false, false, true), vec!(true, true, true));
+        self.insert_pattern(row, col, values);
     }
 
     pub fn insert_pulsar(&mut self, row: u32, col: u32) {
-        let values = [
-            [false, false, true, true, true, false, false, false, true, true, true, false, false],
-            [false, false, false, false, false, false, false, false, false, false, false, false, false],
-            [true, false, false, false, false, true, false, true, false, false, false, false, true],
-            [true, false, false, false, false, true, false, true, false, false, false, false, true],
-            [true, false, false, false, false, true, false, true, false, false, false, false, true],
-            [false, false, true, true, true, false, false, false, true, true, true, false, false],
-            [false, false, false, false, false, false, false, false, false, false, false, false, false],
-            [false, false, true, true, true, false, false, false, true, true, true, false, false],
-            [true, false, false, false, false, true, false, true, false, false, false, false, true],
-            [true, false, false, false, false, true, false, true, false, false, false, false, true],
-            [true, false, false, false, false, true, false, true, false, false, false, false, true],
-            [false, false, false, false, false, false, false, false, false, false, false, false, false],
-            [false, false, true, true, true, false, false, false, true, true, true, false, false]
-        ];
-        for i in 0..values.len() {
-            for j in 0..values.len() {
-                self.cells.set(self.get_index(row + i as u32, col + j as u32), values[j][i]);
-            }
-        }
+        let values = vec!(
+            vec!(false, false, true, true, true, false, false, false, true, true, true, false, false),
+            vec!(false, false, false, false, false, false, false, false, false, false, false, false, false),
+            vec!(true, false, false, false, false, true, false, true, false, false, false, false, true),
+            vec!(true, false, false, false, false, true, false, true, false, false, false, false, true),
+            vec!(true, false, false, false, false, true, false, true, false, false, false, false, true),
+            vec!(false, false, true, true, true, false, false, false, true, true, true, false, false),
+            vec!(false, false, false, false, false, false, false, false, false, false, false, false, false),
+            vec!(false, false, true, true, true, false, false, false, true, true, true, false, false),
+            vec!(true, false, false, false, false, true, false, true, false, false, false, false, true),
+            vec!(true, false, false, false, false, true, false, true, false, false, false, false, true),
+            vec!(true, false, false, false, false, true, false, true, false, false, false, false, true),
+            vec!(false, false, false, false, false, false, false, false, false, false, false, false, false),
+            vec!(false, false, true, true, true, false, false, false, true, true, true, false, false)
+        );
+        self.insert_pattern(row, col, values);
     }
 }
